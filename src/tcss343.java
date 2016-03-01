@@ -3,8 +3,20 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Program finds a solution that computes the cheapest sequence of rentals taking you from post
+ * 1 all the way down to post n.
+ * 
+ * @author Antonio Alvillar, Gabriel Houle, Bethany Eastman
+ * @version 03/01/2016
+ */
 public class tcss343 {
-
+	
+	/**
+	 * Reads in rental costs and finds the minimum costs. 
+	 * 
+	 * @param args - the text file of rental costs.
+	 */
 	public static void main(String[] args) {
 		Scanner input = null;
 		
@@ -31,7 +43,33 @@ public class tcss343 {
 		System.out.println();
 		dynamic(rentals);
 	}
-
+	
+	/**
+	 * The brute force approach to solving the rentals problem. This 
+	 * solution runs in O(X).
+	 * 
+	 * @param rentals - array of rental costs.
+	 */
+	private static void bruteFore(int[][] rentals) {
+		
+	}
+	
+	/**
+	 * The Divide and Conquer approach to solving the rental problem. This
+	 * solution runs in O(X).
+	 * 
+	 * @param rentals - array of rental costs.
+	 */
+	private static void divideAndConquer(int[][] rentals) {
+		
+	}
+	
+	/**
+	 * The dynamic programming approach to solving the rentals problem. This
+	 * solution runs in O(x).
+	 * 
+	 * @param rentals - array of rental costs.
+	 */
 	private static void dynamic(int[][] rentals) {
 		for (int i = 0; i < rentals.length; i++) {
 			System.out.println(Arrays.toString(rentals[i]));
@@ -53,5 +91,4 @@ public class tcss343 {
 			System.out.print(b[i]);
 		}	
 	}
-
 }
