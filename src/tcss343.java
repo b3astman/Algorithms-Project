@@ -15,8 +15,7 @@ public class tcss343 {
 	/**
 	 * Reads in rental costs and finds the minimum costs.
 	 * 
-	 * @param args
-	 *            - the text file of rental costs.
+	 * @param args - the text file of rental costs.
 	 */
 	public static void main(String[] args) {
 		Scanner input = null;
@@ -30,13 +29,14 @@ public class tcss343 {
 		}
 		
 		int numCols = 0;
-		while (input.hasNextLine()) {
+		while (input.hasNextLine()) { // get number of columns / rows in file
 			input.nextLine();
 			numCols++;
 		}
 		
 		int[][] rentals = new int[numCols][numCols];
 		
+		// initialize rentals array with values from file
 		for (int row = 0; row < numCols; row++) {
 			for (int col = 0; col < numCols; col++) {
 				if (input2.hasNextInt()) {
@@ -56,8 +56,7 @@ public class tcss343 {
 	 * The brute force approach to solving the rentals problem. This solution
 	 * runs in O(X).
 	 * 
-	 * @param rentals
-	 *            - array of rental costs.
+	 * @param rentals - array of rental costs.
 	 */
 	private static void bruteFore(int[][] rentals) {
 
@@ -67,8 +66,7 @@ public class tcss343 {
 	 * The Divide and Conquer approach to solving the rental problem. This
 	 * solution runs in O(X).
 	 * 
-	 * @param rentals
-	 *            - array of rental costs.
+	 * @param rentals - array of rental costs.
 	 */
 	private static void divideAndConquer(int[][] rentals) {
 
@@ -78,8 +76,7 @@ public class tcss343 {
 	 * The dynamic programming approach to solving the rentals problem. This
 	 * solution runs in O(x).
 	 * 
-	 * @param rentals
-	 *            - array of rental costs.
+	 * @param rentals - array of rental costs.
 	 */
 	private static void dynamic(int[][] rentals) {
 		for (int i = 0; i < rentals.length; i++) {
