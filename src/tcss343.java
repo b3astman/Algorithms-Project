@@ -28,15 +28,15 @@ public class tcss343 {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		int numCols = 0;
 		while (input.hasNextLine()) { // get number of columns / rows in file
 			input.nextLine();
 			numCols++;
 		}
-		
+
 		int[][] rentals = new int[numCols][numCols];
-		
+
 		// initialize rentals array with values from file
 		for (int row = 0; row < numCols; row++) {
 			for (int col = 0; col < numCols; col++) {
@@ -47,21 +47,15 @@ public class tcss343 {
 					rentals[row][col] = Integer.MAX_VALUE;
 				}
 			}
-		}
-		
-		System.out.println();
-//		dynamic(rentals);
-		
-		// get a set of the possible rental combinations
+		}	
+		System.out.printf("dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
+
 		int n = rentals.length;
-		ArrayList<Integer> theList = new ArrayList<Integer>();
+		ArrayList<Integer> indexList = new ArrayList<Integer>();
 		for (int i = 1; i < n-1; i++) {
-			theList.add(i);
+			indexList.add(i);
 		}
-		ArrayList<ArrayList<Integer>> list = powerset(theList);
-		for (ArrayList<Integer> num : list) {
-			System.out.println(num);
-		}
+		System.out.printf("brute Force min: %d\n", bruteForce(indexList, rentals));
 	}
 
 	/**
@@ -87,13 +81,49 @@ public class tcss343 {
 	}
 
 	/**
-	 * The brute force approach to solving the rentals problem. This solution
-	 * runs in O(X).
+	 * The brute force approach to solving the rentals problem. This 
+	 * solution runs in O(2^n). This solution generates all possible permutations of
+	 * paths that are possible and finds the minimum cost of all possible paths.
 	 * 
 	 * @param rentals - array of rental costs.
+	 * @param indexList - a List of indexes that is used to create the permutations.
+	 * @return the minimum cost of a trip from start to finish.
 	 */
-	private static void bruteFore(int[][] rentals) {
-
+	public static int bruteForce(ArrayList<Integer> indexList, int[][] rentals) {
+		
+		int min = rentals[0][rentals.length - 1];
+		
+		ArrayList<ArrayList<Integer>> ps = new ArrayList<ArrayList<Integer>>();
+		  ps.add(new ArrayList<Integer>());
+		  for (Integer item : indexList) {
+			  ArrayList<ArrayList<Integer>> newPs = new ArrayList<ArrayList<Integer>>();
+		    for (ArrayList<Integer> subset : ps) {
+		      newPs.add(subset);
+		      ArrayList<Integer> newSubset = new ArrayList<Integer>(subset);
+		      newSubset.add(item);
+		      newPs.add(newSubset);
+		      
+//		      System.out.println(newSubset);
+		      
+			  int sum = 0;
+			  int j = 0;
+		      
+		      for (int i = 0; i < newSubset.size(); i++) {//this calculates the 
+		    	  sum += rentals[j][newSubset.get(i)];	  //cost of this permutation
+		    	  j = newSubset.get(i);
+		      }
+		      sum += rentals[j][rentals.length - 1];
+		      min = Math.min(sum, min);
+		      
+		    }
+		    ps = newPs;
+		  }
+		  
+//   		  for (ArrayList<Integer> num : ps) {
+//			System.out.println(num);
+//		  }
+		  
+		  return min;
 	}
 
 	/**
@@ -111,26 +141,31 @@ public class tcss343 {
 	 * solution runs in O(x).
 	 * 
 	 * @param rentals - array of rental costs.
+	 * @return the minimum cost to finish a trip from start to finish.
 	 */
-	private static void dynamic(int[][] rentals) {
-		for (int i = 0; i < rentals.length; i++) {
-			System.out.println(Arrays.toString(rentals[i]));
-		}
-		System.out.println();
 
-		int n = 4;
+	private static int dynamic(int[][] rentals) {
+		
+//		for (int i = 0; i < rentals.length; i++) {//prints array passed to this function
+//			System.out.println(Arrays.toString(rentals[i]));
+//		}
+//		System.out.println();
+		
+		int n = rentals.length;
 		int[] b = new int[n];
 		for (int i = 1; i < n; i++) {
 			b[i] = Integer.MAX_VALUE;
 			for (int j = i - 1; j >= 0; j--) {
 				b[i] = Math.min(rentals[j][i] + b[j], b[i]);
-				System.out.println(b[i]);
+				//System.out.println(b[i]);
 			}
 		}
-		System.out.println();
-
-		for (int i = 0; i < b.length; i++) {
-			System.out.print(b[i]);
-		}
+		//System.out.println();
+		
+//		for (int i = 0; i < b.length; i++) {
+//			System.out.printf("%d, ", b[i]);
+//		}	
+//		System.out.println();
+		return b[n - 1];
 	}
 }
