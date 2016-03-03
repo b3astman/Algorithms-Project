@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -49,7 +50,40 @@ public class tcss343 {
 		}
 		
 		System.out.println();
-		dynamic(rentals);
+//		dynamic(rentals);
+		
+		// get a set of the possible rental combinations
+		int n = rentals.length;
+		ArrayList<Integer> theList = new ArrayList<Integer>();
+		for (int i = 1; i < n-1; i++) {
+			theList.add(i);
+		}
+		ArrayList<ArrayList<Integer>> list = powerset(theList);
+		for (ArrayList<Integer> num : list) {
+			System.out.println(num);
+		}
+	}
+
+	/**
+	 * Creates a set of all possible combinations of rentals.
+	 * 
+	 * @param theList - a list of indexes
+	 * @return - the set.
+	 */
+	public static ArrayList<ArrayList<Integer>> powerset(ArrayList<Integer> theList) {
+		ArrayList<ArrayList<Integer>> ps = new ArrayList<ArrayList<Integer>>();
+		ps.add(new ArrayList<Integer>());
+		for (Integer item : theList) {
+			ArrayList<ArrayList<Integer>> newPs = new ArrayList<ArrayList<Integer>>();
+			for (ArrayList<Integer> subset : ps) {
+				newPs.add(subset);
+				ArrayList<Integer> newSubset = new ArrayList<Integer>(subset);
+				newSubset.add(item);
+				newPs.add(newSubset);
+			}
+			ps = newPs;
+		}
+		return ps;
 	}
 
 	/**
