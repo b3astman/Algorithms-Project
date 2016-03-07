@@ -48,14 +48,20 @@ public class tcss343 {
 				}
 			}
 		}	
-		System.out.printf("dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
+		System.out.printf("Dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
 
 		int n = rentals.length;
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
 		for (int i = 1; i < n-1; i++) {
 			indexList.add(i);
 		}
-		System.out.printf("brute Force min: %d\n", bruteForce(indexList, rentals));
+		
+		int brute = bruteForce(indexList, rentals);
+		if (brute != -1) {
+			System.out.printf("Brute Force min: %d\n", brute);
+		} else {
+			System.out.println("Table is too large! Brute Force takes too long!");
+		}
 	}
 
 	/**
@@ -84,12 +90,21 @@ public class tcss343 {
 	 * The brute force approach to solving the rentals problem. This 
 	 * solution runs in O(2^n). This solution generates all possible permutations of
 	 * paths that are possible and finds the minimum cost of all possible paths.
+	 * Returns -1 if the list will take too long to calculate. (n > 29)
 	 * 
 	 * @param rentals - array of rental costs.
 	 * @param indexList - a List of indexes that is used to create the permutations.
 	 * @return the minimum cost of a trip from start to finish.
 	 */
 	public static int bruteForce(ArrayList<Integer> indexList, int[][] rentals) {
+		
+		/**
+		 * Stops the brute force method from running if there are 
+		 * too many elements in the array.
+		 */
+		if (indexList.size() > 29) {
+			return -1;
+		}
 		
 		int min = rentals[0][rentals.length - 1];
 		

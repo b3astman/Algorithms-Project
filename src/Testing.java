@@ -34,7 +34,7 @@ public class Testing {
 
 		File[] files = new File[5];
 		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 1; i++) {
 			String file = String.format("input%d.txt", i + 1);
 			files[i] = new File(file);
 			
