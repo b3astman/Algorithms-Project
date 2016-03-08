@@ -48,21 +48,33 @@ public class tcss343 {
 				}
 			}
 		}	
-		System.out.printf("Dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
 		
-		int brute = bruteForce(rentals);
-		if (brute != -1) {
-			System.out.printf("Brute Force min: %d\n", brute);
+		long start = System.currentTimeMillis();
+		System.out.printf("Dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer
+		long end = System.currentTimeMillis();
+		System.out.println("Runtime to complete Dynamic: " + (end-start) + " in Milliseconds.");
+		System.out.println();
+		
+		start = System.currentTimeMillis();
+		ArrayList<Integer> brute = bruteForce(rentals);
+		if (brute.get(0) != -1) {
+			System.out.println("Brute Force min: " + calculateCost(brute, rentals));
+			end = System.currentTimeMillis();
+			System.out.println("Brute Force Path Taken: " + 0 + brute + (rentals.length-1));
+			System.out.println("Runtime to complete Brute Force: " + (end-start) + " in Milliseconds.");
+			System.out.println();
 		} else {
 			System.out.println("Table is too large! Brute Force takes too long!");
 		}
 		
+		start = System.currentTimeMillis();
 		ArrayList<Integer> result = divideAndConquer(rentals);
-		
 		if (result.get(0) != -1) {
-			int DAC = calculateCost(result, rentals);
-			System.out.printf("Divide and Conquer min: %d\n", DAC);
-			System.out.println("Divide and Conquer calculated path: " + result);
+			end = System.currentTimeMillis();
+			System.out.printf("Divide and Conquer min: %d\n", calculateCost(result, rentals));
+			System.out.println("Divide and Conquer calculated path: " + 0 + result + (rentals.length-1));
+			System.out.println("Runtime to complete Divide and Conquer: " + (end-start) + " in Milliseconds.");
+			System.out.println();
 		} else {
 			System.out.println("Table is too large! Divide and Conquer takes too long!");
 		}
@@ -100,14 +112,16 @@ public class tcss343 {
 	 * @param indexList - a List of indexes that is used to create the permutations.
 	 * @return the minimum cost of a trip from start to finish.
 	 */
-	public static int bruteForce(int[][] rentals) {
+	public static ArrayList<Integer> bruteForce(int[][] rentals) {
+		ArrayList<Integer> returnSub = new ArrayList<Integer>();
 		
 		/**
 		 * Stops the brute force method from running if there are 
 		 * too many elements in the array.
 		 */
-		if (rentals.length > 29) {
-			return -1;
+		if (rentals.length >= 14) {
+			returnSub.add(-1);
+			return returnSub;
 		}
 		
 		ArrayList<Integer> indexList = indexSet(rentals);
@@ -127,6 +141,9 @@ public class tcss343 {
 //		      System.out.println(newSubset);
 		      
 		      int sum = calculateCost(newSubset, rentals);
+		      if (sum < min) {
+		    	  returnSub = newSubset;
+		      }
 		      min = Math.min(sum, min);
 		      
 		    }
@@ -137,7 +154,7 @@ public class tcss343 {
 //			System.out.println(num);
 //		  }
 		  
-		  return min;
+		  return returnSub;
 	}
 
 	/**
