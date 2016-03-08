@@ -48,25 +48,32 @@ public class tcss343 {
 				}
 			}
 		}	
+		
+		long start = System.currentTimeMillis();
 		System.out.printf("Dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer
+		long end = System.currentTimeMillis();
+		System.out.println("Runtime to complete Dynamic: " + (end-start) + " in Milliseconds.");
 		System.out.println();
 		
-		//int brute = bruteForce(rentals);
+		start = System.currentTimeMillis();
 		ArrayList<Integer> brute = bruteForce(rentals);
 		if (brute.get(0) != -1) {
 			System.out.println("Brute Force min: " + calculateCost(brute, rentals));
+			end = System.currentTimeMillis();
 			System.out.println("Brute Force Path Taken: " + 0 + brute + (rentals.length-1));
+			System.out.println("Runtime to complete Brute Force: " + (end-start) + " in Milliseconds.");
 			System.out.println();
 		} else {
 			System.out.println("Table is too large! Brute Force takes too long!");
 		}
 		
+		start = System.currentTimeMillis();
 		ArrayList<Integer> result = divideAndConquer(rentals);
-		
 		if (result.get(0) != -1) {
-			int DAC = calculateCost(result, rentals);
-			System.out.printf("Divide and Conquer min: %d\n", DAC);
+			end = System.currentTimeMillis();
+			System.out.printf("Divide and Conquer min: %d\n", calculateCost(result, rentals));
 			System.out.println("Divide and Conquer calculated path: " + 0 + result + (rentals.length-1));
+			System.out.println("Runtime to complete Divide and Conquer: " + (end-start) + " in Milliseconds.");
 			System.out.println();
 		} else {
 			System.out.println("Table is too large! Divide and Conquer takes too long!");
