@@ -17,12 +17,10 @@ public class challenge {
 	public static void main(String[] args) {
 		int n = Integer.parseInt(args[0]);
 		int m = Integer.parseInt(args[1]);
-		System.out.println(n);
 		field = new boolean[n][n];
 		for (int i = 1; i <= m * 2; i += 2) {
 			int x = Integer.parseInt(args[i + 1]);
 			int y = Integer.parseInt(args[i + 2]);
-			System.out.println("(" + x + ", " + y + ")");
 			field[x][y] = true;
 		}
 		
