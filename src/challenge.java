@@ -1,7 +1,6 @@
 /*
  * TCSS343 Algos HW4 
  */
-//import java.util.Random;
 
 /**
  * Program finds a solution to the Field and Stones problem.
@@ -11,7 +10,6 @@
  */
 public class challenge {
 	
-//	private static Random rand = new Random();
 	private static boolean[][] field;
 
 	public static void main(String[] args) {
@@ -21,22 +19,11 @@ public class challenge {
 		for (int i = 1; i <= m * 2; i += 2) {
 			int x = Integer.parseInt(args[i + 1]);
 			int y = Integer.parseInt(args[i + 2]);
-			field[x][y] = true;
+			field[x - 1][y - 1] = true;
 		}
 		
 		dynamic();
 	}
-	
-//	public static void createMatrix(int n) {
-//		field = new boolean[n][n];
-//		for (int row = 0; row < n; row++) {
-//			for (int col = 0; col < n; col++) {
-//				if (rand.nextBoolean()) {
-//					field[row][col] = rand.nextBoolean();
-//				}
-//			}
-//		}
-//	}
 	
 	/**
 	 * The dynamic programming solution to the Field and Stones problem.
@@ -84,7 +71,6 @@ public class challenge {
 		for (int i = 0; i <= n - 1; i++) {
 			for (int j = 0; j <= n - 1; j++) {
 				System.out.print(max[i][j] + " ");
-				
 			}
 			System.out.println();
 		}
