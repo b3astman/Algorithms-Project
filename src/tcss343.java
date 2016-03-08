@@ -48,14 +48,24 @@ public class tcss343 {
 				}
 			}
 		}	
-		System.out.printf("dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
-
-		int n = rentals.length;
-		ArrayList<Integer> indexList = new ArrayList<Integer>();
-		for (int i = 1; i < n-1; i++) {
-			indexList.add(i);
+		System.out.printf("Dynamic min: %d\n", dynamic(rentals));//runs the dynamic solution and prints answer	
+		
+		int brute = bruteForce(rentals);
+		if (brute != -1) {
+			System.out.printf("Brute Force min: %d\n", brute);
+		} else {
+			System.out.println("Table is too large! Brute Force takes too long!");
 		}
-		System.out.printf("brute Force min: %d\n", bruteForce(indexList, rentals));
+		
+		ArrayList<Integer> result = divideAndConquer(rentals);
+		
+		if (result.get(0) != -1) {
+			int DAC = calculateCost(result, rentals);
+			System.out.printf("Divide and Conquer min: %d\n", DAC);
+			System.out.println("Divide and Conquer calculated path: " + result);
+		} else {
+			System.out.println("Table is too large! Divide and Conquer takes too long!");
+		}
 	}
 
 	/**
@@ -84,12 +94,23 @@ public class tcss343 {
 	 * The brute force approach to solving the rentals problem. This 
 	 * solution runs in O(2^n). This solution generates all possible permutations of
 	 * paths that are possible and finds the minimum cost of all possible paths.
+	 * Returns -1 if the list will take too long to calculate. (n > 29)
 	 * 
 	 * @param rentals - array of rental costs.
 	 * @param indexList - a List of indexes that is used to create the permutations.
 	 * @return the minimum cost of a trip from start to finish.
 	 */
-	public static int bruteForce(ArrayList<Integer> indexList, int[][] rentals) {
+	public static int bruteForce(int[][] rentals) {
+		
+		/**
+		 * Stops the brute force method from running if there are 
+		 * too many elements in the array.
+		 */
+		if (rentals.length > 29) {
+			return -1;
+		}
+		
+		ArrayList<Integer> indexList = indexSet(rentals);
 		
 		int min = rentals[0][rentals.length - 1];
 		
@@ -105,14 +126,7 @@ public class tcss343 {
 		      
 //		      System.out.println(newSubset);
 		      
-			  int sum = 0;
-			  int j = 0;
-		      
-		      for (int i = 0; i < newSubset.size(); i++) {//this calculates the 
-		    	  sum += rentals[j][newSubset.get(i)];	  //cost of this permutation
-		    	  j = newSubset.get(i);
-		      }
-		      sum += rentals[j][rentals.length - 1];
+		      int sum = calculateCost(newSubset, rentals);
 		      min = Math.min(sum, min);
 		      
 		    }
@@ -132,8 +146,95 @@ public class tcss343 {
 	 * 
 	 * @param rentals - array of rental costs.
 	 */
-	private static void divideAndConquer(int[][] rentals) {
+	public static ArrayList<Integer> divideAndConquer(int[][] rentals) {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		if (rentals.length >= 14) {
+			result.add(-1);
+			return result;
+		}
+		
+		result = recursion(indexSet(rentals), Integer.MAX_VALUE, rentals);
+		
+		if (calculateCost(result, rentals) > calculateCost(indexSet(rentals), rentals)) {
+			result = indexSet(rentals);
+		}
+		
+		return result;
+		
+	}
+	
+	private static ArrayList<Integer> recursion(ArrayList<Integer> theSet, int min, int[][] theRentals) {
+		ArrayList<Integer> result = new ArrayList<>();
+		ArrayList<Integer> minSet = new ArrayList<>();
+		int minsetCost = Integer.MAX_VALUE;
+		
+		for (int i = 0; i < theSet.size(); i++) {//recursion stops with empty set.
+			result = new ArrayList<>();
 
+//			System.out.println("the Set init " + theSet);
+			result.addAll(theSet);
+			result.remove(i);
+			int cost = calculateCost(result, theRentals);
+			ArrayList<Integer> temp = recursion(result, cost, theRentals);
+			if (calculateCost(temp, theRentals) < minsetCost) {
+				minSet = temp;
+			}
+			minsetCost = calculateCost(minSet, theRentals);
+//			System.out.println("minSetCost " + minsetCost);
+//			System.out.println("result " + result);
+//			System.out.println("minSet " + minSet);
+//			System.out.println("Cost: " + cost);
+//			System.out.println("min: " + min);
+			
+			if (minsetCost <= min && minsetCost <= cost){
+				result = minSet;
+				min = minsetCost;
+			} else if (cost >= min) {
+				result.clear();
+				result.addAll(theSet);
+			} else {
+				min = cost;
+			}
+		}
+//		System.out.println("end min: " + minSet);
+//		System.out.println("end result: " + result);
+		return result;
+	}
+	
+	/**
+	 * Returns a set of all indexes in the given array.
+	 * 
+	 * @param theRentals Array being measured.
+	 * @return ArrayList with values i(1...n) such that i is an index in set theRentals
+	 */
+	private static ArrayList<Integer> indexSet(int[][] theRentals) {
+		
+		int n = theRentals.length;
+		ArrayList<Integer> indexList = new ArrayList<Integer>();
+		for (int i = 1; i < n-1; i++) {
+			indexList.add(i);
+		}
+		
+		return indexList;
+	}
+	
+	/**
+	 * This method will calculate the cost of a given path for a given 2d array of costs.
+	 * 
+	 * @param theSet the path being considered.
+	 * @param theRentals the costs of canoe rentals.
+	 * @return the cost of the given route.
+	 */
+	private static int calculateCost(ArrayList<Integer> theSet, int[][] theRentals) {
+		int sum = 0;
+		int j = 0;
+		
+		for (int i = 0; i < theSet.size(); i++) {
+	    	  sum += theRentals[j][theSet.get(i)];
+	    	  j = theSet.get(i);
+	      }
+	     sum += theRentals[j][theRentals.length - 1];
+		return sum;
 	}
 
 	/**
@@ -144,7 +245,7 @@ public class tcss343 {
 	 * @return the minimum cost to finish a trip from start to finish.
 	 */
 
-	private static int dynamic(int[][] rentals) {
+	public static int dynamic(int[][] rentals) {
 		
 //		for (int i = 0; i < rentals.length; i++) {//prints array passed to this function
 //			System.out.println(Arrays.toString(rentals[i]));
