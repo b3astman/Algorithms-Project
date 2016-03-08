@@ -20,7 +20,9 @@ public class challenge {
 		field = new boolean[n][n];
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				field[row][col] = rand.nextBoolean();
+				if (rand.nextBoolean()) {
+					field[row][col] = rand.nextBoolean();
+				}
 			}
 		}
 	}
@@ -31,7 +33,6 @@ public class challenge {
 	 */
 	public static void dynamic() {
 		int largestSquare = 0;
-		
 	}
 
 }
