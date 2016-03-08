@@ -1,7 +1,7 @@
 /*
  * TCSS343 Algos HW4 
  */
-import java.util.Random;
+//import java.util.Random;
 
 /**
  * Program finds a solution to the Field and Stones problem.
@@ -11,25 +11,34 @@ import java.util.Random;
  */
 public class challenge {
 	
-	private static Random rand = new Random();
+//	private static Random rand = new Random();
 	private static boolean[][] field;
 
 	public static void main(String[] args) {
-		createMatrix(8);
-//		System.out.println(Arrays.deepToString(field));
+		int n = Integer.parseInt(args[0]);
+		int m = Integer.parseInt(args[1]);
+		System.out.println(n);
+		field = new boolean[n][n];
+		for (int i = 1; i <= m * 2; i += 2) {
+			int x = Integer.parseInt(args[i + 1]);
+			int y = Integer.parseInt(args[i + 2]);
+			System.out.println("(" + x + ", " + y + ")");
+			field[x][y] = true;
+		}
+		
 		dynamic();
 	}
 	
-	public static void createMatrix(int n) {
-		field = new boolean[n][n];
-		for (int row = 0; row < n; row++) {
-			for (int col = 0; col < n; col++) {
-				if (rand.nextBoolean()) {
-					field[row][col] = rand.nextBoolean();
-				}
-			}
-		}
-	}
+//	public static void createMatrix(int n) {
+//		field = new boolean[n][n];
+//		for (int row = 0; row < n; row++) {
+//			for (int col = 0; col < n; col++) {
+//				if (rand.nextBoolean()) {
+//					field[row][col] = rand.nextBoolean();
+//				}
+//			}
+//		}
+//	}
 	
 	/**
 	 * The dynamic programming solution to the Field and Stones problem.
@@ -82,8 +91,8 @@ public class challenge {
 			System.out.println();
 		}
 		
-		System.out.println("Largest square " + largestSquare);
-		System.out.println("Max index: (" + maxI + ", " + maxJ + ")");
+		System.out.println("Size " + largestSquare);
+		System.out.println("Position: (" + maxI + ", " + maxJ + ")");
 	}
 
 }
