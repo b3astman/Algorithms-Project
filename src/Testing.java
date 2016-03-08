@@ -20,7 +20,7 @@ public class Testing {
 	 */
 	public static void main(String[] theArgs) {
 		int[][][] tests = new int[5][][];
-		int[][] test = createArray(100);
+		int[][] test = createArray(10);
 		
 		tests[0] = test;
 		test = createArray(200);
@@ -34,7 +34,7 @@ public class Testing {
 
 		File[] files = new File[5];
 		
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 1; i++) {//set i < 5 to create all five files, less than 5 will save time creating.
 			String file = String.format("input%d.txt", i + 1);
 			files[i] = new File(file);
 			
@@ -80,15 +80,15 @@ public class Testing {
 			
 			for (int i = 0; i < theArr.length - 1; i++) {
 				if (theArr[i][0] == -1) {
-					file.printf("%3s", "NA");
+					file.printf("%4s", "NA");
 				} else {
-					file.printf("%3d", theArr[i][0]);
+					file.printf("%4d", theArr[i][0]);
 				}
 				for (int j = 1; j < theArr.length - 1; j++) {
 					if (theArr[i][j] == -1) {
-						file.print("  NA");
+						file.print("   NA");
 					} else {
-						file.printf(" %3d", theArr[i][j]);
+						file.printf(" %4d", theArr[i][j]);
 					}
 				}
 				file.println("");
