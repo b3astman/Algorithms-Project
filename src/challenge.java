@@ -30,6 +30,7 @@ public class challenge {
 	 * This solution runs in O(n^2).
 	 */
 	public static void dynamic() {
+		int largestSquare = 0;
 		
 	}
 
