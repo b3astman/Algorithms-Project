@@ -1,8 +1,6 @@
 import java.util.Arrays;
 import java.util.Random;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 /*
  * TCSS343 Algos HW4 
  */
@@ -25,6 +23,14 @@ public class challenge {
 				field[row][col] = rand.nextBoolean();
 			}
 		}
+	}
+	
+	/**
+	 * The dynamic programming solution to the Field and Stones problem.
+	 * This solution runs in O(n^2).
+	 */
+	public static void dynamic() {
+		
 	}
 
 }
