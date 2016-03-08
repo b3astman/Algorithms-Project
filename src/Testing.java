@@ -20,7 +20,7 @@ public class Testing {
 	 */
 	public static void main(String[] theArgs) {
 		int[][][] tests = new int[5][][];
-		int[][] test = createArray(10);
+		int[][] test = createArray(100);
 		
 		tests[0] = test;
 		test = createArray(200);
@@ -40,6 +40,10 @@ public class Testing {
 			
 			outputArray(tests[i], files[i]);
 		}
+		
+		// This is to create small test files. 
+		outputArray(createArray(14), new File("smallInput.txt"));
+		outputArray(createArray(10), new File("smallerInput.txt"));
 	}
 	
 	/**
