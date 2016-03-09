@@ -19,9 +19,8 @@ public class challenge {
 		for (int i = 1; i <= m * 2; i += 2) {
 			int x = Integer.parseInt(args[i + 1]);
 			int y = Integer.parseInt(args[i + 2]);
-			field[x - 1][y - 1] = true;
-		}
-		
+			field[x][y] = true;
+		}	
 		dynamic();
 	}
 	
@@ -59,7 +58,7 @@ public class challenge {
 		// get index and maximum at that index
 		for (int i = n - 1; i >= 0; i--) {
 			for (int j = n - 1; j >= 0; j--) {
-				if (max[i][j] > largestSquare) {
+				if (max[i][j] >= largestSquare) {
 					largestSquare = max[i][j];
 					maxI = i;
 					maxJ = j;
