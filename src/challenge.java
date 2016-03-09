@@ -19,10 +19,24 @@ public class challenge {
 		for (int i = 1; i <= m * 2; i += 2) {
 			int x = Integer.parseInt(args[i + 1]);
 			int y = Integer.parseInt(args[i + 2]);
-			field[x - 1][y - 1] = true;
+			field[x][y] = true;
 		}
+		printArray();
 		
 		dynamic();
+	}
+	
+	public static void printArray() {
+		for (int i = 0; i <= field.length - 1; i++) {
+			for (int j = 0; j <= field.length - 1; j++) {
+				if (field[i][j] == false) {
+					System.out.print("F ");
+				} else {
+					System.out.print("T ");
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 	/**
@@ -59,7 +73,7 @@ public class challenge {
 		// get index and maximum at that index
 		for (int i = n - 1; i >= 0; i--) {
 			for (int j = n - 1; j >= 0; j--) {
-				if (max[i][j] > largestSquare) {
+				if (max[i][j] >= largestSquare) {
 					largestSquare = max[i][j];
 					maxI = i;
 					maxJ = j;
@@ -67,15 +81,9 @@ public class challenge {
 			}
 		}
 		
-		// print array for debug
-		for (int i = 0; i <= n - 1; i++) {
-			for (int j = 0; j <= n - 1; j++) {
-				System.out.print(max[i][j] + " ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("Size " + largestSquare);
+		System.out.println();
+		System.out.println("Dynamic Programming Solution:");
+		System.out.println("Size: " + largestSquare);
 		System.out.println("Position: (" + maxI + ", " + maxJ + ")");
 	}
 
