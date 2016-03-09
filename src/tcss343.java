@@ -4,8 +4,10 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -16,15 +18,20 @@ import java.util.Scanner;
  * @version 03/01/2016
  */
 public class tcss343 {
+	
+	private static Random myRand;
 
 	/**
 	 * Reads in rental costs and finds the minimum costs.
+	 * There is a line that can be uncommented that will run the test file creation method.
 	 * 
 	 * @param args - the text file of rental costs.
 	 */
 	public static void main(String[] args) {
 		Scanner input = null;
 		Scanner input2 = null;
+		
+//		testing(); // uncomment this to run the test array creation functions.
 
 		try {
 			input = new Scanner(new File(args[0]));
@@ -54,12 +61,7 @@ public class tcss343 {
 		}
 
 		long start = System.currentTimeMillis();
-		int[][] test = (dynamic(rentals));
-		for (int[] arr : test) {
-			System.out.println(Arrays.toString(arr));
-		}
-		
-//		System.out.printf("Dynamic min: %d\n", dynamic(rentals));
+		System.out.printf("Dynamic min: %d\n", dynamic(rentals));
 		// runs the dynamic solution and prints answer
 																
 		long end = System.currentTimeMillis();
@@ -99,36 +101,103 @@ public class tcss343 {
 					.println("Table is too large! Divide and Conquer takes too long!");
 		}
 	}
+	
+	/**
+	 * Problem 3.5
+	 * 
+	 * This class will create 5 files input1-5.txt that will contains 2D arrays that
+	 * represent the canoe problem.
+	 */
+	public static void testing() {
+		int[][][] tests = new int[5][][];
+		int[][] test = createArray(100);
+		
+		tests[0] = test;
+		test = createArray(200);
+		tests[1] = test;
+		test = createArray(400);
+		tests[2] = test;
+		test = createArray(600);
+		tests[3] = test;
+		test = createArray(800);
+		tests[4] = test;
+
+		File[] files = new File[5];
+		
+		for(int i = 0; i < 5; i++) {//set i < 5 to create all five files, less than 5 will save time creating.
+			String file = String.format("input%d.txt", i + 1);
+			files[i] = new File(file);
+			
+			outputArray(tests[i], files[i]);
+		}
+		
+		// This is to create small test files. 
+		outputArray(createArray(14), new File("smallInput.txt"));
+		outputArray(createArray(10), new File("smallerInput.txt"));
+	}
 
 	/**
-	 * Creates a set of all possible combinations of rentals.
+	 * Creates the array with random elements, with increasing values as
+	 * the table goes from left to right.
 	 * 
-	 * @param theList
-	 *            - a list of indexes
-	 * @return - the set.
+	 * @param n size of the generate price matrix.
+	 * @return the Generated array.
 	 */
-	public static ArrayList<ArrayList<Integer>> powerset(
-			ArrayList<Integer> theList) {
-		ArrayList<ArrayList<Integer>> ps = new ArrayList<ArrayList<Integer>>();
-		ps.add(new ArrayList<Integer>());
-		for (Integer item : theList) {
-			ArrayList<ArrayList<Integer>> newPs = new ArrayList<ArrayList<Integer>>();
-			for (ArrayList<Integer> subset : ps) {
-				newPs.add(subset);
-				ArrayList<Integer> newSubset = new ArrayList<Integer>(subset);
-				newSubset.add(item);
-				newPs.add(newSubset);
+	public static int[][] createArray(int n) {
+		myRand = new Random();
+		int[][] result = new int[n][n];
+		
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i == j) {
+					result[i][j] = 0;
+				} else if (i > j) {
+					result[i][j] = -1;
+				} else {
+					result[i][j] = (myRand.nextInt(25) + 1) + result[i][j - 1];
+				} 
 			}
-			ps = newPs;
 		}
-		return ps;
+		return result;
+	}
+	
+	/**
+	 * Outputs the array to a given text file.
+	 * 
+	 * @param theArr The array being printed to the file.
+	 * @param outputFile The file being written to.
+	 */
+	public static void outputArray(int[][] theArr, File outputFile) {
+		PrintStream file;
+		try {
+			file = new PrintStream(outputFile);
+			
+			for (int i = 0; i < theArr.length - 1; i++) {
+				if (theArr[i][0] == -1) {
+					file.printf("%4s", "NA");
+				} else {
+					file.printf("%4d", theArr[i][0]);
+				}
+				for (int j = 1; j < theArr.length - 1; j++) {
+					if (theArr[i][j] == -1) {
+						file.print("   NA");
+					} else {
+						file.printf(" %4d", theArr[i][j]);
+					}
+				}
+				file.println("");
+			}
+			file.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
 	}
 
 	/**
 	 * The brute force approach to solving the rentals problem. This solution
 	 * runs in O(2^n). This solution generates all possible permutations of
 	 * paths that are possible and finds the minimum cost of all possible paths.
-	 * Returns -1 if the list will take too long to calculate. (n > 29)
+	 * Returns -1 if the list will take too long to calculate. (n > 20)
 	 * 
 	 * @param rentals
 	 *            - array of rental costs.
@@ -143,7 +212,7 @@ public class tcss343 {
 		 * Stops the brute force method from running if there are too many
 		 * elements in the array.
 		 */
-		if (rentals.length >= 14) {
+		if (rentals.length >= 20) {
 			returnSub.add(-1);
 			return returnSub;
 		}
@@ -196,6 +265,26 @@ public class tcss343 {
 
 		return result;
 
+	}
+	
+	/**
+	 * The dynamic programming approach to solving the rentals problem. This
+	 * solution runs in O(x).
+	 * 
+	 * @param rentals
+	 *            - array of rental costs.
+	 * @return the minimum cost to finish a trip from start to finish.
+	 */
+	public static int dynamic(int[][] rentals) {
+		int n = rentals.length;
+		int[] b = new int[n];
+		for (int i = 1; i < n; i++) {
+			b[i] = Integer.MAX_VALUE;
+			for (int j = i - 1; j >= 0; j--) {
+				b[i] = Math.min(rentals[j][i] + b[j], b[i]);
+			}
+		}
+		return b[n - 1];
 	}
 
 	private static ArrayList<Integer> recursion(ArrayList<Integer> theSet,
@@ -270,45 +359,5 @@ public class tcss343 {
 		return sum;
 	}
 
-	/**
-	 * The dynamic programming approach to solving the rentals problem. This
-	 * solution runs in O(x).
-	 * 
-	 * @param rentals
-	 *            - array of rental costs.
-	 * @return the minimum cost to finish a trip from start to finish.
-	 */
 
-	public static int[][] dynamic(int[][] rentals) {
-		int n = rentals.length;
-		int[][] b = new int[n][n];
-		
-		for (int i = 1; i < n; i++) {
-			for (int j = i - 1; j >= 0; j--) {
-				b[i][j] = Integer.MAX_VALUE;
-				if (i == j) {
-					b[i][j] = 0;
-				} else if (j - 1 < 0) {
-					b[i][j] = Math.min(rentals[i][j], b[i][j]);
-				} else {
-					b[i][j] = Math.min(rentals[j][i] + b[i - 1][j - 1], rentals[i][j] + b[j][0]);
-
-				}
-			}
-		}
-		return b;
-		
-		
-		
-		
-//		int n = rentals.length;
-//		int[] b = new int[n];
-//		for (int i = 1; i < n; i++) {
-//			b[i] = Integer.MAX_VALUE;
-//			for (int j = i - 1; j >= 0; j--) {
-//				b[i] = Math.min(rentals[j][i] + b[j], b[i]);
-//			}
-//		}
-//		return b[n - 1];
-	}
 }
