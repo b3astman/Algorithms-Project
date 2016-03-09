@@ -1,9 +1,9 @@
-   0    1   15   37   62   82  104  106  121
-  NA    0   22   43   58   76   82   94  109
-  NA   NA    0   23   48   55   78   97  105
-  NA   NA   NA    0   17   34   35   46   52
-  NA   NA   NA   NA    0   15   38   43   49
-  NA   NA   NA   NA   NA    0   22   44   51
-  NA   NA   NA   NA   NA   NA    0   23   44
+   0    7   26   34   46   55   61   84   85
+  NA    0   13   33   41   55   67   77   78
+  NA   NA    0   20   42   44   60   84  106
+  NA   NA   NA    0   18   43   59   60   80
+  NA   NA   NA   NA    0   19   37   59   60
+  NA   NA   NA   NA   NA    0    2   14   21
+  NA   NA   NA   NA   NA   NA    0    2    5
   NA   NA   NA   NA   NA   NA   NA    0    3
   NA   NA   NA   NA   NA   NA   NA   NA    0
