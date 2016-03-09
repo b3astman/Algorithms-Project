@@ -5,6 +5,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -53,7 +54,12 @@ public class tcss343 {
 		}
 
 		long start = System.currentTimeMillis();
-		System.out.printf("Dynamic min: %d\n", dynamic(rentals));
+		int[][] test = (dynamic(rentals));
+		for (int[] arr : test) {
+			System.out.println(Arrays.toString(arr));
+		}
+		
+//		System.out.printf("Dynamic min: %d\n", dynamic(rentals));
 		// runs the dynamic solution and prints answer
 																
 		long end = System.currentTimeMillis();
@@ -273,15 +279,36 @@ public class tcss343 {
 	 * @return the minimum cost to finish a trip from start to finish.
 	 */
 
-	public static int dynamic(int[][] rentals) {
+	public static int[][] dynamic(int[][] rentals) {
 		int n = rentals.length;
-		int[] b = new int[n];
+		int[][] b = new int[n][n];
+		
 		for (int i = 1; i < n; i++) {
-			b[i] = Integer.MAX_VALUE;
 			for (int j = i - 1; j >= 0; j--) {
-				b[i] = Math.min(rentals[j][i] + b[j], b[i]);
+				b[i][j] = Integer.MAX_VALUE;
+				if (i == j) {
+					b[i][j] = 0;
+				} else if (j - 1 < 0) {
+					b[i][j] = Math.min(rentals[i][j], b[i][j]);
+				} else {
+					b[i][j] = Math.min(rentals[j][i] + b[i - 1][j - 1], rentals[i][j] + b[j][0]);
+
+				}
 			}
 		}
-		return b[n - 1];
+		return b;
+		
+		
+		
+		
+//		int n = rentals.length;
+//		int[] b = new int[n];
+//		for (int i = 1; i < n; i++) {
+//			b[i] = Integer.MAX_VALUE;
+//			for (int j = i - 1; j >= 0; j--) {
+//				b[i] = Math.min(rentals[j][i] + b[j], b[i]);
+//			}
+//		}
+//		return b[n - 1];
 	}
 }
