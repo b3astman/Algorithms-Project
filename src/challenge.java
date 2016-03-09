@@ -104,6 +104,10 @@ public class challenge {
 		return result;
 	}
 	
+	/**
+	 * The brute force solution to the Field and Stones problem.
+	 * This solution runs in O(n^3).
+	 */
 	public static void bruteForce() {
 		int maxI = 0;
 		int maxJ = 0;
