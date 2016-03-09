@@ -22,7 +22,7 @@ public class challenge {
 			field[x][y] = true;
 		}
 		printArray();
-		
+		bruteForce();
 		dynamic();
 	}
 	
@@ -126,6 +126,10 @@ public class challenge {
 				}
 			}
 		}
-		System.out.println("I: " + maxI + " J: " + maxJ + " maxSize: " + maxSize);
+		
+		System.out.println();
+		System.out.println("Brute Force Solution:");
+		System.out.println("Size: " + maxSize);
+		System.out.println("Position: (" + maxI + ", " + maxJ + ")");
 	}
 }
