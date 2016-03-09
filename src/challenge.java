@@ -20,8 +20,23 @@ public class challenge {
 			int x = Integer.parseInt(args[i + 1]);
 			int y = Integer.parseInt(args[i + 2]);
 			field[x][y] = true;
-		}	
+		}
+		printArray();
+		
 		dynamic();
+	}
+	
+	public static void printArray() {
+		for (int i = 0; i <= field.length - 1; i++) {
+			for (int j = 0; j <= field.length - 1; j++) {
+				if (field[i][j] == false) {
+					System.out.print("F ");
+				} else {
+					System.out.print("T ");
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 	/**
@@ -66,15 +81,9 @@ public class challenge {
 			}
 		}
 		
-		// print array for debug
-		for (int i = 0; i <= n - 1; i++) {
-			for (int j = 0; j <= n - 1; j++) {
-				System.out.print(max[i][j] + " ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("Size " + largestSquare);
+		System.out.println();
+		System.out.println("Dynamic Programming Solution:");
+		System.out.println("Size: " + largestSquare);
 		System.out.println("Position: (" + maxI + ", " + maxJ + ")");
 	}
 
